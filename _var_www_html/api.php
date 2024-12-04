@@ -834,7 +834,11 @@ function get() {
 			close_with_500( "database error" ) ;
 		}
 		if( $entry_count>1 ) {
-			add_error( $device, "more than 1 entry count for {$method} {$path} with: {$entry_count}" ) ;
+			// found bug with very quick initial queries to same path/device, not worth fixing with SDK around the corner, workaround in the interim
+			$db->prepared_query( "DELETE FROM `microservice`.`data` WHERE `device`=? AND
+																		  `path`=?", array($device,
+																						   $path), "#g984yh359", 0 ) ;
+			// add_error( $device, "more than 1 entry count for {$method} {$path} with: {$entry_count}" ) ;
 		}
 
 		if( $datum===null || $datum==="" ) {
