@@ -13,7 +13,7 @@ CREATE TABLE `tasks` (
   `in_process_since_timestamp` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `device` (`device`(22))
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=memory max_rows=1000000 DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `data` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
@@ -25,11 +25,11 @@ CREATE TABLE IF NOT EXISTS `data` (
   `last_refreshed_timestamp` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `main` (`device`(22),`path`(22))
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=memory max_rows=1000000 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `errors` (
   `device` varchar(1024) NOT NULL,
   `message` varchar(4096) DEFAULT NULL,
   `added_timestamp` timestamp NOT NULL DEFAULT current_timestamp(),
   KEY `device` (`device`(22))
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=memory max_rows=1000000 DEFAULT CHARSET=utf8;

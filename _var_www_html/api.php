@@ -116,6 +116,13 @@ if( is_cli() ) {
 																												$datum['path']), "#low7ih8i", 0 ) ;
 						}
 					}
+
+					// making sure task table doesn't grow too big (memory engine has stringent row count limits)
+					$task_count = $db->prepared_query( "SELECT COUNT(1) FROM `microservice`.`tasks`", [], "#4j568645et", 3 ) ;
+					if( $task_count>=1024 ) {
+						$count_to_delete = $task_count - 1025 ;
+						$db->prepared_query( "DELETE FROM `microservice`.`tasks` LIMIT ?", [$count_to_delete], "#53unwrsg", 0 ) ;
+					}
 					
 					// 1% chance of removing task log files older than 10 days
 					if( mt_rand(0,99)==0 ) {
@@ -780,6 +787,12 @@ function get_bookings_list( $device, $retry_count=0 ) {
 
 function add_error( $device, $message ) {
 	global $db ;
+	// rows are limited with memory engine
+	$error_count = $db->prepared_query( "SELECT COUNT(1) FROM `microservice`.`errors`", [], "#53u3u5", 3 ) ;
+	if( $error_count>=1024 ) {
+		$count_to_delete = $error_count - 1025 ;
+		$db->prepared_query( "DELETE FROM `microservice`.`errors` LIMIT ?", [$count_to_delete], "#837ty938", 0 ) ;
+	}
 	$db->prepared_query( "INSERT INTO `microservice`.`errors` SET `device`=?,
 	 															  `message`=?", array($device,
 	 															  					  $message), "#e8gh487", 0 ) ;

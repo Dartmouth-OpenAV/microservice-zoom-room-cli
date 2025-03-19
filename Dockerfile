@@ -13,7 +13,8 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install mariadb-server -y
 COPY _db_data.sql /db_data.sql
 COPY _initialize_db_data.sh /initialize_db_data.sh
 RUN chmod 750 /initialize_db_data.sh
-RUN sed -i "s/password =.*/password = password/g" /etc/mysql/debian.cnf
+#RUN sed -i "s/password =.*/password = password/g" /etc/mysql/debian.cnf
+RUN bash -c 'echo -e "[mysqld]\nmax_heap_table_size=512M" > /etc/mysql/mariadb.conf.d/50-server_heap.cnf'
 
 # Web Server
 RUN DEBIAN_FRONTEND=noninteractive apt-get install apache2 php php-curl php-xml libapache2-mod-php php-mysql screen -y
