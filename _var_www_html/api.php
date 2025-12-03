@@ -295,6 +295,9 @@ function parse_clis( $response, $wanted_results ) {
 
 function get_only_relevant_response( $parsed_jsons, $extra_explicit=false, $extra_explicit_type=false ) {
 	$all_to_return = array() ;
+	if( $extra_explicit=="Call" ) {
+		$parsed_jsons = array_reverse( $parsed_jsons ) ;
+	}
 	foreach( $parsed_jsons as $parsed_json ) {
 		if( !(
 			  (isset($parsed_json['type']) && $parsed_json['type']=="zStatus" && isset($parsed_json['Login'])) ||
