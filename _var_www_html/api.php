@@ -813,7 +813,7 @@ function get_errors() {
 	$errors = $new_errors ;
 
 	if( count($errors)==0 ) {
-		close_with_200( "no errors" ) ;
+		close_with_200( [] ) ;
 	} else {
 		close_with_500( $errors ) ;
 	}
